@@ -1,16 +1,24 @@
-# Overview
+# PXEC API
 <a id="markdown-overview" name="overview"></a>
 
 <!-- TOC -->
 
 - [Overview](#overview)
 - [History](#history)
-- [1. 系統代碼定義](#markdown-1.系統代碼定義)
-    - [1.1. Http_Status_Code:200](#markdown-httpstatuscode200)
-    - [1.2. Http_Status_Code:401](#markdown-httpstatuscode400)
-    - [1.3. Http_Status_Code:400](#markdown-httpstatuscode401)
-- [2. 後台登入](#markdown-2.後台登入)
-    - [2.1. ]
+- [1.系統代碼定義](#markdown-1.系統代碼定義)
+    - [1.1 Http_Status_Code:200](#markdown-httpstatuscode200)
+    - [1.2 Http_Status_Code:401](#markdown-httpstatuscode400)
+    - [1.3 Http_Status_Code:400](#markdown-httpstatuscode401)
+- [2.後台登入](markdown-2.共同規範)
+    - [2.1 Header](#markdown-2.1Header)
+- [3.管理後台](#markdown-管理後台)
+    - [3.1 帳號密碼驗證](#markdown-帳號密碼驗證)
+    - [3.2 新增帳號](#markdown-新增帳號)
+    - [3.3 後台使用者列表](#markdown-後台使用者列表)
+    - [3.4 更新後台使用者](#markdown-更新後台使用者)
+
+
+
 <!-- /TOC -->
 
 # History
@@ -55,30 +63,54 @@
 
 <br/>
 
-## 2. 後台登入
-<a id="markdown-登入後台" name="登入後台"></a>
+# 2. 共同規範
+<a id="markdown-2.共同規範" name="共同規範"></a>
 
-### 2.1 帳號密碼驗證
-<a id="markdown-確認使用者狀態" name="確認使用者狀態"></a>
-    驗證後台使用者帳號密碼
- <br/>
-
-#### 2.1.1 Diagram
-<a id="markdown-diagram" name="diagram"></a>
-
-#### 2.1.2 Request
-<a id="markdown-request" name="request"></a>
-
-+ Url Format : ``` /pxec/backend/login ```
-+ Http Method: [ **Post** ]
-+ Content Type : ``` application/json ```
+## 2.1 通用 Header
+<a id="markdown-2.1Header" name="Header"></a>
+    呼叫API時 Header 需帶參數
+<br>
 
 + Header
 
     | Parameter    | Type   | Mandatory | Description                                     |
     | ------------ | ------ | --------- | ----------------------------------------------- |
     | platform     | string | Y         | GroupBuying(圈團消費者端)<br>GroupInitiator(團爸團媽端)<br>Shop(EC)<br>Backend(後台)|
+    | authentication | string | Y       | 使用者token |
 
+
+# 3. 管理後台
+<a id="markdown-管理後台" name="管理後台"></a>
+
+## 共同規格
+
+**角色Role**
+
+|   role  | value | description |
+| ------- | ----- | ----------- |
+| Product |   1   | 圈團-製檔        |
+| Approve |   2   | 圈團-審核批准    |
+| Customer|   3   | 圈團-客服        |
+|  admin  |  999  | 系統管理    |
+
+
+### 3.1 帳號密碼驗證
+<a id="markdown-帳號密碼驗證" name="帳號密碼驗證"></a>
+    驗證後台使用者帳號密碼
+ <br/>
+
+#### 3.1.1 Diagram
+<a id="markdown-diagram" name="diagram"></a>
+
+#### 3.1.2 Request
+<a id="markdown-request" name="request"></a>
+
++ Url Format : ``` /backend/login ```
++ Http Method: [ **Post** ]
++ Content Type : ``` application/json ```
++ Header
+    <br>
+    `不需要帶 authentication`
 + Parameters
 
     | Parameter    | Type   | Mandatory | Description                  |
@@ -94,7 +126,7 @@
     }
     ```
 
-#### 2.1.3 Response
+#### 3.1.3 Response
 <a id="markdown-response" name="response"></a>
 
 + Content Type : ``` application/json ```
@@ -129,27 +161,20 @@
     }
     ```
 
-### 2.2 新增帳號
+### 3.2 新增帳號
 <a id="markdown-新增帳號" name="新增帳號"></a>
     新增後台使用者
  <br/>
 
-#### 2.2.1 Diagram
+#### 3.2.1 Diagram
 <a id="markdown-diagram" name="diagram"></a>
 
-#### 2.2.2 Request
+#### 3.2.2 Request
 <a id="markdown-request" name="request"></a>
 
-+ Url Format : ``` /pxec/backend/login ```
++ Url Format : ``` /pxec/manager/add ```
 + Http Method: [ **Post** ]
 + Content Type : ``` application/json ```
-
-+ Header
-
-    | Parameter    | Type   | Mandatory | Description                                     |
-    | ------------ | ------ | --------- | ----------------------------------------------- |
-    | platform       | string | Y       | GroupBuying(圈團消費者端)<br>GroupInitiator(團爸團媽端)<br>Shop(EC)<br>Backend(後台)|
-    | authentication | string | Y       | 使用者token |
 
 + Parameters
 
@@ -159,7 +184,7 @@
     | name         | string | Y         | 密碼                         |
     | email        | string | Y         | Email (登入帳號)              |
     | first_login_password  | string    | Y | 首次登入密碼             |
-    | role_id      | int[]  | Y         | 角色ID                       |
+    | role         | int[]  | Y         | 角色ID                       |
 
 
 + Example
@@ -168,12 +193,12 @@
         "employee_id": "2999999",
         "name" : "福利雄",
         "email" : "fulibear@pxmart.com.tw",
-        "first_login_password" : "df",
-        "role_id" : [1,2,3]
+        "first_login_password" : "abcd-1234",
+        "role" : [1,2,3]
     }
     ```
 
-#### 2.2.3 Response
+#### 3.2.3 Response
 <a id="markdown-response" name="response"></a>
 
 + Content Type : ``` application/json ```
@@ -198,51 +223,113 @@
 
     ```
 
-### 2.3 帳號(使用者)列表
-<a id="markdown-新增帳號" name="新增帳號"></a>
+### 3.3 後台使用者列表
+<a id="markdown-後台使用者列表" name="後台使用者列表"></a>
     後台帳號管理使用者列表
  <br/>
 
-#### 2.3.1 Diagram
+#### 3.3.1 Diagram
 <a id="markdown-diagram" name="diagram"></a>
 
-#### 2.3.2 Request
+#### 3.3.2 Request
 <a id="markdown-request" name="request"></a>
 
-+ Url Format : ``` /pxec/backend/login ```
++ Url Format : ``` /backend/manager/query ```
 + Http Method: [ **Post** ]
 + Content Type : ``` application/json ```
-
-+ Header
-
-    | Parameter    | Type   | Mandatory | Description                                     |
-    | ------------ | ------ | --------- | ----------------------------------------------- |
-    | platform       | string | Y       | GroupBuying(圈團消費者端)<br>GroupInitiator(團爸團媽端)<br>Shop(EC)<br>Backend(後台)|
-    | authentication | string | Y       | 使用者token |
-
 + Parameters
 
     | Parameter    | Type   | Mandatory | Description                  |
     | ------------ | ------ | --------- | ---------------------------- |
-    | employee_id  | string | Y         | 新增帳號                      |
-    | name         | string | Y         | 密碼                         |
-    | email        | string | Y         | Email (登入帳號)              |
-    | first_login_password  | string    | Y | 首次登入密碼             |
-    | role_id      | int[]  | Y         | 角色ID                       |
+    | create_time_s| string |           | 建立帳號時間(起)              |
+    | create_time_e| string |           | 建立帳號時間(訖)              |
+    | employee_id  | string |           | 員工編號                     |
+    | name         | string |           | 姓名                         |
 
+#### 3.3.3 Response
+<a id="markdown-response" name="response"></a>
+
++ Content Type : ``` application/json ```
++ Body
+
+    | Parameter   | Type   | Mandatory | Descrption                                                     |
+    | ----------- | ------ | --------- | ------------------------------------------------------------- |
+    | code        | string | Y         | response code <br/> 1000: 欄位資料驗證錯誤<br/> 9999: 系統異常  |
+    | src         | string | Y         | 服務代碼                                                       |
+    | message     | string | Y         | response message                                              |
+    | data        | object | Y         | 員工資料                                                          |
+
+    **data**
+    | Parameter         | Type        | Mandatory | Descrption                                     |
+    | ----------------- | ----------- | --------- | ---------------------------------------------- |
+    | id                | int         | Y         | Key      |
+    | create_time       | Datetime    | Y         | 建立時間  |
+    | employee_id       | string      | Y         | 員工編號  |
+    | email             | email       | Y         | 員工Email |
+    | name              | name        | Y         | 姓名      |
+    | modify_time       | modify_time | Y         | 最後編輯時間 |
+    | is_setting_pwd    | bool        | Y         | 是否已設定密碼 |
+    | is_disable        | bool        | Y         | 是否帳號停用   |
 
 + Example
+
     ```json
-    {
-        "employee_id": "2999999",
-        "name" : "福利雄",
-        "email" : "fulibear@pxmart.com.tw",
-        "first_login_password" : "df",
-        "role_id" : [1,2,3]
-    }
+        {
+            "code": "0000",
+            "srv": "BKE",
+            "message": "success",
+            "data": [
+                {
+                    "id" : "1001",
+                    "create_time" : "2022-01-10 12:00:00",
+                    "employee_id" : "2100001",
+                    "email": "fulibear@pxmart.com.tw",
+                    "name": "福利雄",
+                    "modify_time": "2922-02-01 12:00:00",
+                    "is_setting_pwd" : true,
+                    "is_disable" : false
+                },
+                {
+                    "id" : "1002",
+                    "create_time" : "2022-02-01 12:00:00",
+                    "employee_id" : "2100002",
+                    "email": "appledog@pxmart.com.tw",
+                    "name": "蘋狗",
+                    "modify_time": "2922-03-01 12:00:00",
+                    "is_setting_pwd" : true,
+                    "is_disable" : true
+                }
+            ]
+        }
+
     ```
 
-#### 2.3.3 Response
+### 3.4 更新後台使用者
+<a id="markdown-更新後台使用者" name="更新後台使用者"></a>
+    後台帳號管理更新帳號
+ <br/>
+
+#### 3.4.1 Diagram
+<a id="markdown-diagram" name="diagram"></a>
+
+#### 3.4.2 Request
+<a id="markdown-request" name="request"></a>
+
++ Url Format : ``` /backend/manager/update ```
++ Http Method: [ **Post** ]
++ Content Type : ``` application/json ```
++ Parameters
+
+    | Parameter    | Type   | Mandatory | Description                  |
+    | ------------ | ------ | --------- | ---------------------------- |
+    | employee_id  | int    | Y         | 員工編號                     |
+    | name         | string |           | 姓名                         |
+    | role         | int[]  |           | 角色                         |
+    | password     | string |           | 重設密碼需給值 (初始密碼)     |
+    | is_reset_pwd | bool   | Y         | 是否重設密碼                  |
+    | Set_disable  | bool   | Y         | 是否停用帳號(離職)            |
+
+#### 3.4.3 Response
 <a id="markdown-response" name="response"></a>
 
 + Content Type : ``` application/json ```
