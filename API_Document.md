@@ -180,7 +180,7 @@
 
     | Parameter    | Type   | Mandatory | Description                  |
     | ------------ | ------ | --------- | ---------------------------- |
-    | employee_id  | string | Y         | 新增帳號                      |
+    | employee_no  | string | Y         | 新增帳號                      |
     | name         | string | Y         | 密碼                         |
     | email        | string | Y         | Email (登入帳號)              |
     | first_login_password  | string    | Y | 首次登入密碼             |
@@ -190,7 +190,7 @@
 + Example
     ```json
     {
-        "employee_id": "2999999",
+        "employee_no": "2999999",
         "name" : "福利雄",
         "email" : "fulibear@pxmart.com.tw",
         "first_login_password" : "abcd-1234",
@@ -243,7 +243,7 @@
     | ------------ | ------ | --------- | ---------------------------- |
     | create_time_s| string |           | 建立帳號時間(起)              |
     | create_time_e| string |           | 建立帳號時間(訖)              |
-    | employee_id  | string |           | 員工編號                     |
+    | employee_no  | string |           | 員工編號                     |
     | name         | string |           | 姓名                         |
 
 #### 3.3.3 Response
@@ -264,7 +264,7 @@
     | ----------------- | ----------- | --------- | ---------------------------------------------- |
     | id                | int         | Y         | Key      |
     | create_time       | Datetime    | Y         | 建立時間  |
-    | employee_id       | string      | Y         | 員工編號  |
+    | employee_no       | string      | Y         | 員工編號  |
     | email             | email       | Y         | 員工Email |
     | name              | name        | Y         | 姓名      |
     | modify_time       | modify_time | Y         | 最後編輯時間 |
@@ -282,7 +282,7 @@
                 {
                     "id" : "1001",
                     "create_time" : "2022-01-10 12:00:00",
-                    "employee_id" : "2100001",
+                    "employee_no" : "2100001",
                     "email": "fulibear@pxmart.com.tw",
                     "name": "福利雄",
                     "modify_time": "2922-02-01 12:00:00",
@@ -292,7 +292,7 @@
                 {
                     "id" : "1002",
                     "create_time" : "2022-02-01 12:00:00",
-                    "employee_id" : "2100002",
+                    "employee_no" : "2100002",
                     "email": "appledog@pxmart.com.tw",
                     "name": "蘋狗",
                     "modify_time": "2922-03-01 12:00:00",
@@ -322,7 +322,7 @@
 
     | Parameter    | Type   | Mandatory | Description                  |
     | ------------ | ------ | --------- | ---------------------------- |
-    | employee_id  | int    | Y         | 員工編號                     |
+    | employee_no  | int    | Y         | 員工編號                     |
     | name         | string |           | 姓名                         |
     | role         | int[]  |           | 角色                         |
     | password     | string |           | 重設密碼需給值 (初始密碼)     |
