@@ -16,7 +16,8 @@
     - [3.2 新增帳號](#markdown-新增帳號)
     - [3.3 後台使用者列表](#markdown-後台使用者列表)
     - [3.4 更新後台使用者](#markdown-更新後台使用者)
-
+- [4.後台商品管理](#markdown-後台商品管理)
+    - [4.1 列出30天商品草稿上傳記錄](#markdown-列出30天商品草稿上傳記錄)
 
 
 <!-- /TOC -->
@@ -351,5 +352,51 @@
             "message": "success",
             "data": null
         }
+
+    ```
+
+
+# 4. 後台商品管理
+<a id="markdown-後台商品管理" name="後台商品管理"></a>
+
+### 4.1 列出30天商品草稿上傳記錄
+<a id="markdown-列出30天商品草稿上傳記錄" name="列出30天商品草稿上傳記錄"></a>
+
+#### Request
++ Url Format : ``` /backend/1.0/product/listProductDraftsWithin30Days ```
++ Http Method: [ **GET** ]
++ Parameters: ```無參數```
+
+#### Response
++ Content Type : ``` application/json ```
++ Body
+
+    | Parameter   | Type   | Mandatory | Descrption              |
+    | ----------- | ------ | --------- | ----------------------- |
+    | createTime  | string | Y | 上傳時間，格式: 2021/07/26 16:15 |
+    | productName | string | Y | 商品名稱                        |
+    | itemNo      | string | Y | 條碼                            |
+    | barcode     | string | Y | 貨號                            |
+
++ Example
+
+    ```json
+    {
+        "code": "0000",
+        "message": "Success",
+        "result": [
+        {
+            "createTime": "2021/07/26 16:15",
+            "productName": "WFT平底鍋",
+            "itemNo": "A0001",
+            "barcode": "106612001"
+        },
+        {
+            "createTime": "2021/07/26 16:15",
+            "productName": "WTF叉子",
+            "itemNo": "A0002",
+            "barcode": "106612002"
+        }]
+    }
 
     ```
