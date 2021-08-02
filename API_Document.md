@@ -3,21 +3,36 @@
 
 <!-- TOC -->
 
-- [Overview](#overview)
+- [PXEC API](#pxec-api)
 - [History](#history)
-- [1.系統代碼定義](#markdown-1.系統代碼定義)
-    - [1.1 Http_Status_Code:200](#markdown-httpstatuscode200)
-    - [1.2 Http_Status_Code:401](#markdown-httpstatuscode400)
-    - [1.3 Http_Status_Code:400](#markdown-httpstatuscode401)
-- [2.後台登入](markdown-2.共同規範)
-    - [2.1 Header](#markdown-2.1Header)
-- [3.管理後台](#markdown-管理後台)
-    - [3.1 帳號密碼驗證](#markdown-帳號密碼驗證)
-    - [3.2 新增帳號](#markdown-新增帳號)
-    - [3.3 後台使用者列表](#markdown-後台使用者列表)
-    - [3.4 更新後台使用者](#markdown-更新後台使用者)
-- [4.後台商品管理](#markdown-後台商品管理)
-    - [4.1 列出30天商品草稿上傳記錄](#markdown-列出30天商品草稿上傳記錄)
+- [1. 系統代碼定義](#1-系統代碼定義)
+    - [1.1. Http_Status_Code:200](#11-http_status_code200)
+    - [1.2. Http_Status_Code:400](#12-http_status_code400)
+    - [1.3. Http_Status_Code:401](#13-http_status_code401)
+- [2. 共同規範](#2-共同規範)
+  - [2.1 通用 Header](#21-通用-header)
+- [3. 管理後台](#3-管理後台)
+  - [共同規格](#共同規格)
+    - [3.1 帳號密碼驗證](#31-帳號密碼驗證)
+      - [3.1.1 Diagram](#311-diagram)
+      - [3.1.2 Request](#312-request)
+      - [3.1.3 Response](#313-response)
+    - [3.2 新增帳號](#32-新增帳號)
+      - [3.2.1 Diagram](#321-diagram)
+      - [3.2.2 Request](#322-request)
+      - [3.2.3 Response](#323-response)
+    - [3.3 後台使用者列表](#33-後台使用者列表)
+      - [3.3.1 Diagram](#331-diagram)
+      - [3.3.2 Request](#332-request)
+      - [3.3.3 Response](#333-response)
+    - [3.4 更新後台使用者](#34-更新後台使用者)
+      - [3.4.1 Diagram](#341-diagram)
+      - [3.4.2 Request](#342-request)
+      - [3.4.3 Response](#343-response)
+- [4. 後台商品管理](#4-後台商品管理)
+    - [4.1 列出30天商品草稿上傳記錄](#41-列出30天商品草稿上傳記錄)
+      - [Request](#request)
+      - [Response](#response)
 
 
 <!-- /TOC -->
@@ -42,7 +57,14 @@
 | ---------------- | ---- | ------------------------------------------------ | ----------- |
 | 200              | 0000 | success                                          |             |
 | 200              | 1000 | 欄位資料驗證錯誤                                  |             |
-| 200              | 2001 | 帳號或密碼錯誤                                    |             |
+| 200              | 2001 | Service沒有使用權限                               | 對服務       |
+| 200              | 2002 | 沒有使用權限                                      | 對使用者    |
+| 200              | 3001 | 此員工Email尚未註冊，請與內部人員聯繫註冊          |             |
+| 200              | 3002 | 此帳號已禁止登入，請與管理員聯繫重設密碼。          |             |
+| 200              | 3003 | 密碼輸入錯誤，請重新輸入!錯誤次數{n}次             |             |
+| 200              | 3004 | 無法取得登入Token。                               |             |
+| 200              | 3005 | Email帳號已存在                                  |             |
+| 200              | 3006 | 請設定一組新密碼                                  |             |
 
 <br/>
 
@@ -52,6 +74,12 @@
 | Http status code | Code | Message  | Description |
 | ---------------- | ---- | -------- | ----------- |
 | 400              | 9999 | 系統異常 |             |
+| 400              | 2003 | Token不合法或以逾期，請Refresh Token            |如再不合法重新登入|
+| 400              | 2004 | Refresh Token 不合法，請重新登入                  |             |
+| 400              | 2005 | Refresh Token 已失效，請重新登入                  |             |
+| 400              | 2006 | 驗證失敗，請重新登入                              |             |
+| 400              | 2007 | 驗證會員失敗，請重新登入                          |             |
+| 400              | 2008 | 驗證使用者失敗，請重新登入                        |             |
 
 <br/>
 
@@ -60,7 +88,7 @@
 
 | Http status code | Code | Message                         | Description                                             |
 | ---------------- | ---- | ------------------------------- | ------------------------------------------------------  |
-| 401              | 4001 | 不合法授權/授權已逾期，請重新登入 | Token不合法或以逾期，請Refresh Token，如在不合法重新登入  |
+| 401              | 2003 | 不合法授權/授權已逾期，請重新登入 | Token不合法或以逾期，請Refresh Token，如在不合法重新登入  |
 
 <br/>
 
