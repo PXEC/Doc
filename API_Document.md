@@ -29,6 +29,10 @@
       - [3.4.1 Diagram](#341-diagram)
       - [3.4.2 Request](#342-request)
       - [3.4.3 Response](#343-response)
+    - [3.5 檔案上傳](#35-檔案上傳)
+      - [3.5.1 Diagram](#351-diagram)
+      - [3.5.2 Request](#352-request)
+      - [3.5.3 Response](#353-response)
 - [4. 後台商品管理](#4-後台商品管理)
     - [4.1 列出30天商品草稿上傳記錄](#41-列出30天商品草稿上傳記錄)
       - [Request](#request)
@@ -97,15 +101,16 @@
 
 ## 2.1 通用 Header
 <a id="markdown-2.1Header" name="Header"></a>
-    呼叫API時 Header 需帶參數
+    前端呼叫API時 Header 需帶參數
 <br>
 
 + Header
 
     | Parameter    | Type   | Mandatory | Description                                     |
     | ------------ | ------ | --------- | ----------------------------------------------- |
-    | platform     | string | Y         | GroupBuying(圈團消費者端)<br>GroupInitiator(團爸團媽端)<br>Shop(EC)<br>Backend(後台)|
-    | authentication | string | Y       | 使用者token |
+    | platform_id  | string | Y         | GroupBuying(圈團消費者端):a2f9f7fa-529a-4e18-99a5-33f625fb71b7<br>GroupInitiator(團爸團媽端):b4bfc8a8-5944-428a-8849-17b7ad480e00<br>Backend(後台):d603b103-ef07-43d3-a5a2-0beea3796411|
+    | authentication | string | Y       | 使用者token, 格式: Bearer XXXXX |
+    |  |
 
 
 # 3. 管理後台
@@ -379,6 +384,67 @@
             "srv": "BKE",
             "message": "success",
             "data": null
+        }
+
+    ```
+### 3.5 檔案上傳
+<a id="markdown-檔案上傳" name="檔案上傳"></a>
+    後台帳號管理更新帳號
+ <br/>
+
+#### 3.5.1 Diagram
+<a id="markdown-diagram" name="diagram"></a>
+
+#### 3.5.2 Request
+<a id="markdown-request" name="request"></a>
+
++ Url Format : ``` /service/1.0/file/upload ```
++ Http Method: [ **Post** ]
++ Content Type : ``` application/json ```
++ Parameters
+
+    | Parameter    | Type   | Mandatory | Description                  |
+    | ------------ | ------ | --------- | ---------------------------- |
+    | PlatformId   | Guid   | Y         | 平台ID                       |
+    | user_id      | int    | Y         | 上傳者ID                     |
+    | base64       | string | Y         | 檔案Base64編碼               |
+    | is_watermark | bool   | Y         | 是否壓上浮水印                |
+
+#### 3.5.3 Response
+<a id="markdown-response" name="response"></a>
+
++ Content Type : ``` application/json ```
++ Body
+
+    | Parameter   | Type   | Mandatory | Descrption                                                     |
+    | ----------- | ------ | --------- | ------------------------------------------------------------- |
+    | code        | string | Y         | response code <br/> 1000: 欄位資料驗證錯誤<br/> 9999: 系統異常  |
+    | src         | string | Y         | 服務代碼                                                       |
+    | message     | string | Y         | response message                                              |
+    | data        | object | Y         |上傳結果                                                |
+
+
+     **data**
+
+    | Parameter         | Type        | Mandatory | Descrption                                     |
+    | ----------------- | ----------- | --------- | ---------------------------------------------- |
+    | file_id           | int         | Y         | Key                   |
+    | file_name         | string      | Y         | 上傳後檔名             |
+    | full_name         | string      | Y         | 上傳後含資料夾名稱檔名  |
+
+
++ Example
+
+    ```json
+        {
+            "code": "0000",
+            "srv": "UPL",
+            "message": "success",
+            "data": {
+                "file_id"：1,
+                "file_name": "63763518463338.jpg",
+                "full_name": "202108\63763518463338.jpg"
+            }
         }
 
     ```
