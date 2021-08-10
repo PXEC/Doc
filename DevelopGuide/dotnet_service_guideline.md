@@ -166,3 +166,4 @@ Ex:
 5. 全域變數請以下底線開頭與小寫開頭 ex: private readonly string _authRepository;
 6. Model 不可跨層使用，請以AutoMapper做轉換或使用隱含型別var。
 7. 使用FluentValidation或System.ComponentModel.DataAnnotations做資料驗證。
+8. API回傳值命名規範開頭小寫單字以底線分隔 ex: employee_no / user_id / refresh_token
