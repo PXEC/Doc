@@ -42,6 +42,7 @@
     `PXEC.{商模類型}.{主領域}.{子領域}.service`<br>
     `共通類型: PXEC.{領域}.Service`
 <br>
+
 ```
 Ex:
     PXEC.Authentication.Service
@@ -50,6 +51,7 @@ Ex:
     PXEC.Groupbuying.Marketing.Coupon.Service
     PXEC.Shop.Product.Service
 ```
+
 3. 專案檔案統一放置 src 目錄底下
 
 ### `目錄結構`
