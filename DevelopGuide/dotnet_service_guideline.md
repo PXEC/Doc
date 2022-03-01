@@ -145,11 +145,6 @@ Ex:
 4. 實作包括DBContext, I/O(Redis, stream..), 較用外部API, MQ, 領域事件/命令發佈分派(MediatR)等
 5. 實體的操作所派發出的事件會在儲存實體(entity SaveChange)時一併處理。
 
-### `事件發送器`
-![MediatR](https://docs.microsoft.com/zh-tw/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/media/domain-events-design-implementation/domain-event-dispatcher.png)
-
-參考來源 微軟 .NET微服務：容器化 .NET 應用程式的架構(Nish Anil)
-
 ### `目錄結構`
 ![Domain folder](infra_folder.png)
 |Name   |type|Description|
@@ -169,3 +164,15 @@ Ex:
 6. Model 不可跨層使用，請以AutoMapper做轉換或使用隱含型別var。
 7. 使用FluentValidation或System.ComponentModel.DataAnnotations做資料驗證。
 8. API回傳值命名規範開頭小寫單字以底線分隔 ex: employee_no / user_id / refresh_token
+9.  Query 一律使用 HTTPGet、Command 使用 HTTPPost。
+10. root entity中宣告的sub entity 集合必須宣告為 protected internal 層級(只有根實體可操作子實體成員, 不開放command直接操作/新增/編輯子集合)。
+
+## **解耦合規範**
+1. A Command(Event) -> B Command(Event) -> A Command(Event) 透過 Kafka 解耦合
+---
+2. A Query -> B Query -> A Return 直接呼叫 (效能相對b.2稍低)
+3. 同步方式達成 A平時透過資料同步方式抄寫B資料, A即可回所有資料 (高效能/高複雜/使用空間高)
+4. 由前端分開呼叫兩支API自行merge data
+---
+5. A Event -> B Query -> A Result (爭議不允許, 應該在publish event前將資料準備齊全)
+6. A Command -> B Query -> A Result 允許
